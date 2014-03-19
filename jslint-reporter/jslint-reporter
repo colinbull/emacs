@@ -1,0 +1,5 @@
+#!/bin/sh
+
+basedir=`dirname "$0"`
+/usr/local/Cellar/node/0.10.24/bin/node "$basedir/wrapper.js" "$@"
+exit $?
