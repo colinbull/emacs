@@ -9,3 +9,5 @@ places
 ropemacs-0.6
 url
 init.el~
+*.elc
+server

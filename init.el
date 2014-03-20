@@ -10,17 +10,10 @@
 (defvar on_darwin     (string-match "darwin" system-type-as-string))
 
 ;;------------------------------------------------------------------------------
-;; Proxy details
-;;------------------------------------------------------------------------------
-
-(cond
- (on_windows_nt
-  (setenv "http_proxy" "http://username:password@10.64.3.193:8080")
-  ))
-
-;;------------------------------------------------------------------------------
 ;; Package management
 ;;------------------------------------------------------------------------------
+
+;; set the http_proxy environment variable if working behind a proxy
 
 ;; Initialize packages now so we can just require them
 (setq package-enable-at-startup nil)
