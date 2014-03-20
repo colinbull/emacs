@@ -139,8 +139,6 @@
 	      (when server-buffer-clients
 		(local-set-key (kbd "C-x k") 'server-edit))))
 
-(eshell)
-
 (defun swap-windows ()
   "If you have 2 windows, it swaps them."
   (interactive)
@@ -484,6 +482,9 @@ This function is intended to be used as a value of `ring-bell-function'."
 
 ;;------------------------------------------------------------------------------
 
+
 (when window-system
-  (speedbar 1))
+;;  (speedbar 1)
+;;  (eshell)
+  )
 
