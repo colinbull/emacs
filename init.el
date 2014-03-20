@@ -236,7 +236,7 @@ This function is intended to be used as a value of `ring-bell-function'."
        ;; (set-default-font "Courier New-12:bold")
 ))
 
-(load-theme 'wombat)
+(load-theme 'deeper-blue)
 
 ;;------------------------------------------------------------------------------
 ;; Scrolling
