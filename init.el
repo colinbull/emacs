@@ -37,11 +37,14 @@
     auto-compile
     auto-complete
     browse-kill-ring
+    clojure-mode
     doremi-cmd
     flycheck
     fsharp-mode
     haskell-mode
+    json
     markdown-mode
+    rainbow-delimiters
     starter-kit
     starter-kit-lisp
     starter-kit-bindings
@@ -236,7 +239,7 @@ This function is intended to be used as a value of `ring-bell-function'."
        ;; (set-default-font "Courier New-12:bold")
 ))
 
-(load-theme 'deeper-blue)
+(load-theme 'misterioso)
 
 ;;------------------------------------------------------------------------------
 ;; Scrolling
@@ -354,6 +357,52 @@ This function is intended to be used as a value of `ring-bell-function'."
 (set-cursor-color "#00ff00")
 
 ;;------------------------------------------------------------------------------
+;; Clojure
+;;------------------------------------------------------------------------------
+
+(require 'clojure-mode)
+(require 'rainbow-delimiters)
+
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+
+(eval-after-load 'clojure-mode
+  '(font-lock-add-keywords
+    'clojure-mode `(("(\\(fn\\)[\[[:space:]]"
+                     (0 (progn (compose-region (match-beginning 1)
+                                               (match-end 1) "Î»")
+                               nil))))))
+
+(eval-after-load 'clojure-mode
+  '(font-lock-add-keywords
+    'clojure-mode `(("\\(#\\)("
+                     (0 (progn (compose-region (match-beginning 1)
+                                               (match-end 1) "Æ’")
+                               nil))))))
+
+(eval-after-load 'clojure-mode
+  '(font-lock-add-keywords
+    'clojure-mode `(("\\(#\\){"
+                     (0 (progn (compose-region (match-beginning 1)
+                                               (match-end 1) "âˆˆ")
+                               nil))))))
+
+(eval-after-load 'find-file-in-project
+  '(add-to-list 'ffip-patterns "*.clj"))
+
+;; cider
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq cider-repl-pop-to-buffer-on-connect t)
+(setq cider-popup-stacktraces t)
+(setq cider-repl-popup-stacktraces t)
+(setq cider-auto-select-error-buffer t)
+(setq cider-repl-history-file "~/.emacs.d/cider-history")
+(setq cider-repl-wrap-history t)
+
+(add-hook 'cider-repl-mode-hook 'subword-mode)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+;;------------------------------------------------------------------------------
 ;; F#
 ;;------------------------------------------------------------------------------
 
@@ -381,6 +430,7 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;; Javascript
 ;;------------------------------------------------------------------------------
 
+(require 'json)
 (require 'flycheck)
 
 (cond (on_windows_nt       
@@ -443,21 +493,30 @@ This function is intended to be used as a value of `ring-bell-function'."
 (setq auto-mode-alist (cons '("\\.svg\\'" . xml-mode) auto-mode-alist))
 
 ;;------------------------------------------------------------------------------
-
-
 ;; aspell
+;;------------------------------------------------------------------------------
+
 (add-to-list 'exec-path "/usr/local/bin/")
 (setq ispell-program-name "aspell")
 (require 'ispell)
 
+;;------------------------------------------------------------------------------
 ;; markdown
+;;------------------------------------------------------------------------------
+
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
+;;------------------------------------------------------------------------------
 ;; TeX
+;;------------------------------------------------------------------------------
+
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 
+;;------------------------------------------------------------------------------
 ;; Octave
+;;------------------------------------------------------------------------------
+
 (autoload 'octave-mode "octave-mod" nil t)
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
@@ -478,13 +537,9 @@ This function is intended to be used as a value of `ring-bell-function'."
 
 (require 'haskell-mode-autoloads)
 
-
-
 ;;------------------------------------------------------------------------------
-
 
 (when window-system
 ;;  (speedbar 1)
 ;;  (eshell)
   )
-
