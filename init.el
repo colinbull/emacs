@@ -34,6 +34,7 @@
 
 (defvar my-packages 
   '(
+    anti-zenburn
     auto-compile
     auto-complete
     browse-kill-ring
@@ -115,6 +116,10 @@
 
 ;; Show matching parenthesis
 (show-paren-mode t)
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
 
 ;; hi lock is only available since Emacs 22.
 (when (>= emacs-major-version 22)
@@ -210,7 +215,7 @@ This function is intended to be used as a value of `ring-bell-function'."
 (global-font-lock-mode t)
 
 ;; To the max!
-(setq font-lock-maximum-decoration t)
+(setq font-lock-maximum-decoration nil)
 
 ;; Dark background
 (set-foreground-color "white")
@@ -239,7 +244,7 @@ This function is intended to be used as a value of `ring-bell-function'."
        ;; (set-default-font "Courier New-12:bold")
 ))
 
-(load-theme 'dichromacy)
+(load-theme 'anti-zenburn)
 
 ;;------------------------------------------------------------------------------
 ;; Scrolling
@@ -321,17 +326,17 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;; Among them: make copy and delete in dired recursive.
 
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(custom-safe-themes (quote ("8dd5991bf912b39dc4ae77e2d6aa4882949f4441570222eaf25e07ec38c44d50" default)))
  '(dired-recursive-copies (quote top))
  '(dired-recursive-deletes (quote top))
  '(large-file-warning-threshold 100000000)
  '(mumamo-submode-indent-offset 4)
- '(same-window-buffer-names (quote ("*eshell*" "*Python*" "*shell*"
-                                    "*mail*" "*inferior-lisp*"
-                                    "*ielm*" "*scheme*" "*"))))
+ '(same-window-buffer-names (quote ("*eshell*" "*Python*" "*shell*" "*mail*" "*inferior-lisp*" "*ielm*" "*scheme*" "*"))))
 
 ;;________________________________________________________________
 ;;    Insert hard newlines while typing in text mode
@@ -406,9 +411,6 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;; F#
 ;;------------------------------------------------------------------------------
 
-(unless (package-installed-p 'fsharp-mode)
-  (package-install 'fsharp-mode))
-
 (require 'fsharp-mode)
 
 ; Compiler and REPL paths
@@ -422,9 +424,12 @@ This function is intended to be used as a value of `ring-bell-function'."
        ))
 
 (add-hook 'fsharp-mode-hook
- (lambda ()
-   (define-key fsharp-mode-map (kbd "M-RET") 'fsharp-eval-region)
-   (define-key fsharp-mode-map (kbd "C-SPC") 'fsharp-ac/complete-at-point)))
+          (lambda ()
+            (setq-default indent-tabs-mode nil)
+            (setq-default tab-width 4)
+            (setq indent-line-function 'insert-tab)
+            (define-key fsharp-mode-map (kbd "M-RET") 'fsharp-eval-region)
+            (define-key fsharp-mode-map (kbd "C-SPC") 'fsharp-ac/complete-at-point)))
 
 ;;------------------------------------------------------------------------------
 ;; Javascript
@@ -543,3 +548,9 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;;  (speedbar 1)
 ;;  (eshell)
   )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
