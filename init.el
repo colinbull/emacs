@@ -42,6 +42,7 @@
     doremi-cmd
     flycheck
     fsharp-mode
+    gist
     haskell-mode
     json
     markdown-mode
@@ -360,6 +361,12 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;;(set-face-attribute 'default nil :height 140)
 
 (set-cursor-color "#00ff00")
+
+;;------------------------------------------------------------------------------
+;; Gist
+;;------------------------------------------------------------------------------
+
+;; Gist uses url.el which can be configured to use proxies
 
 ;;------------------------------------------------------------------------------
 ;; Clojure
