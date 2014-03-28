@@ -34,19 +34,24 @@
 
 (defvar my-packages 
   '(
-    anti-zenburn
+    anti-zenburn-theme
     auto-compile
     auto-complete
     browse-kill-ring
     clojure-mode
+    cyberpunk-theme
     doremi-cmd
+    espresso-theme
+    flatland-theme
     flycheck
     fsharp-mode
     gist
     haskell-mode
     json
+    late-night-theme
     markdown-mode
     rainbow-delimiters
+    remember-theme
     starter-kit
     starter-kit-lisp
     starter-kit-bindings
@@ -245,7 +250,7 @@ This function is intended to be used as a value of `ring-bell-function'."
        ;; (set-default-font "Courier New-12:bold")
 ))
 
-(load-theme 'anti-zenburn)
+;;(load-theme 'anti-zenburn)
 
 ;;------------------------------------------------------------------------------
 ;; Scrolling
@@ -332,12 +337,16 @@ This function is intended to be used as a value of `ring-bell-function'."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-safe-themes (quote ("8dd5991bf912b39dc4ae77e2d6aa4882949f4441570222eaf25e07ec38c44d50" default)))
+ '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" "948e22090fb44672cb0580529fc0a89598a6aea6bf2c2c78a8339e346365e524" "8dd5991bf912b39dc4ae77e2d6aa4882949f4441570222eaf25e07ec38c44d50" default)))
  '(dired-recursive-copies (quote top))
  '(dired-recursive-deletes (quote top))
+ '(fci-rule-color "#c7c7c7")
  '(large-file-warning-threshold 100000000)
  '(mumamo-submode-indent-offset 4)
- '(same-window-buffer-names (quote ("*eshell*" "*Python*" "*shell*" "*mail*" "*inferior-lisp*" "*ielm*" "*scheme*" "*"))))
+ '(same-window-buffer-names (quote ("*eshell*" "*Python*" "*shell*" "*mail*" "*inferior-lisp*" "*ielm*" "*scheme*" "*")))
+ '(vc-annotate-background "#d4d4d4")
+ '(vc-annotate-color-map (quote ((20 . "#437c7c") (40 . "#336c6c") (60 . "#205070") (80 . "#2f4070") (100 . "#1f3060") (120 . "#0f2050") (140 . "#a080a0") (160 . "#806080") (180 . "#704d70") (200 . "#603a60") (220 . "#502750") (240 . "#401440") (260 . "#6c1f1c") (280 . "#935f5c") (300 . "#834744") (320 . "#732f2c") (340 . "#6b400c") (360 . "#23733c"))))
+ '(vc-annotate-very-old-color "#23733c"))
 
 ;;________________________________________________________________
 ;;    Insert hard newlines while typing in text mode
@@ -360,7 +369,7 @@ This function is intended to be used as a value of `ring-bell-function'."
 (global-set-key (kbd "C-c C-k") 'browse-kill-ring)
 ;;(set-face-attribute 'default nil :height 140)
 
-(set-cursor-color "#00ff00")
+;;(set-cursor-color "#00ff00")
 
 ;;------------------------------------------------------------------------------
 ;; Gist
