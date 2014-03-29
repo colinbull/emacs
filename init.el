@@ -246,7 +246,7 @@ This function is intended to be used as a value of `ring-bell-function'."
        ;;(set-default-font "Lucida Console-11:bold")
        ;; (set-default-font "Lucida Console-13:bold")
        ;; (set-default-font "Lucida Console-15:bold")
-       (set-default-font "Consolas-14")
+       (set-default-font "Consolas-10")
        ;; (set-default-font "Courier New-12:bold")
 ))
 
