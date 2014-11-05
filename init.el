@@ -220,6 +220,7 @@ This function is intended to be used as a value of `ring-bell-function'."
 ;; Use font-lock everywhere.
 (global-font-lock-mode t)
 
+
 ;; To the max!
 (setq font-lock-maximum-decoration nil)
 
@@ -272,11 +273,11 @@ This function is intended to be used as a value of `ring-bell-function'."
 (cond (on_windows_nt
        ;; xemacs won't like the following:
        (global-set-key [mouse-4] 'down-medium)
-       (global-set-key [mouse-5] 'up-medium)
+       (global-set-key [mouse-5] 'up-medium))
 
-       (global-set-key [S-mouse-4] 'down-slow)
-       (global-set-key [S-mouse-5] 'up-slow)
-))
+      (global-set-key [S-mouse-4] 'down-slow)
+      (global-set-key [S-mouse-5] 'up-slow)
+)
 
 ;; The trackpad on Mac OSX generates too many events.
 ;; Scroll by 1 unless shifted.
@@ -563,10 +564,11 @@ This function is intended to be used as a value of `ring-bell-function'."
 (when window-system
 ;;  (speedbar 1)
 ;;  (eshell)
-  )
+)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(highlight ((t nil))))
