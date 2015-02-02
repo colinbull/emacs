@@ -22,8 +22,9 @@
 
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
+
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (package-initialize)
 
@@ -47,6 +48,7 @@
     fsharp-mode
     gist
     haskell-mode
+    idris-mode
     json
     late-night-theme
     markdown-mode
@@ -68,7 +70,6 @@
 ;;------------------------------------------------------------------------------
 
 (add-to-list 'load-path "~/.emacs.d/")
-
 (setq debug-on-error t)
 
 (setq require-final-newline 'query)
@@ -272,12 +273,13 @@ This function is intended to be used as a value of `ring-bell-function'."
 
 (cond (on_windows_nt
        ;; xemacs won't like the following:
-       (global-set-key [mouse-4] 'down-medium)
-       (global-set-key [mouse-5] 'up-medium))
+;       (global-set-key [mouse-4] 'down-medium)
+;       (global-set-key [mouse-5] 'up-medium)
+       )
 
-      (global-set-key [S-mouse-4] 'down-slow)
-      (global-set-key [S-mouse-5] 'up-slow)
-)
+;      (global-set-key [S-mouse-4] 'down-slow)
+;      (global-set-key [S-mouse-5] 'up-slow)
+      )
 
 ;; The trackpad on Mac OSX generates too many events.
 ;; Scroll by 1 unless shifted.
@@ -321,7 +323,7 @@ This function is intended to be used as a value of `ring-bell-function'."
 (setq ac-ignore-case nil)
 
 (require 'yasnippet)
-(yas--initialize)
+;(yas--initialize)
 ;; Add snippets to the auto-complete dropdown
 (add-to-list 'ac-sources 'ac-source-yasnippet)
 
@@ -423,6 +425,17 @@ This function is intended to be used as a value of `ring-bell-function'."
 (add-hook 'cider-repl-mode-hook 'subword-mode)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+;;-----------------------------------------------------------------------------
+;; Idris
+;;----------------------------------------------------------------------------
+
+(require 'idris-mode)
+
+;;Point at idris dev sandbox
+(add-to-list 'exec-path "~/Appdev/idris/.cabal-sandbox/bin")
+
+
 
 ;;------------------------------------------------------------------------------
 ;; F#
