@@ -2,6 +2,15 @@
 ;; .emacs
 
 ;;------------------------------------------------------------------------------
+;; UI Disabling
+;;------------------------------------------------------------------------------
+
+(when window-system
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0)
+  (menu-bar-mode 0))
+
+;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
 
@@ -16,15 +25,13 @@
 ;; set the http_proxy environment variable if working behind a proxy
 
 ;; Initialize packages now so we can just require them
-(setq package-enable-at-startup nil)
-
 (require 'package)
 
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(setq package-enable-at-startup nil)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ;("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (package-initialize)
 
@@ -39,7 +46,6 @@
     auto-compile
     auto-complete
     browse-kill-ring
-    clojure-mode
     flycheck
     fsharp-mode
     gist
@@ -103,8 +109,7 @@
 ;;    Put all .save's in one place
 ;;________________________________________________________________
 
-
-(setq auto-save-list-file-prefix "~/Appdev/.save/.saves-")
+(setq auto-save-list-file-prefix "~/.save/.saves-")
 
 
 ;;    Choose interactively from the kill ring.
@@ -190,11 +195,6 @@
 (require 'haskell-mode-autoloads)
 
 ;;------------------------------------------------------------------------------
-
-(when window-system
-;;  (speedbar 1)
-;;  (eshell)
-)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
