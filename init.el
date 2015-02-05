@@ -10,6 +10,7 @@
   (tool-bar-mode 0)
   (menu-bar-mode 0))
 
+(setq inhibit-splash-screen t)
 ;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
@@ -46,6 +47,8 @@
     auto-compile
     auto-complete
     browse-kill-ring
+    ido-at-point
+    ido-ubiquitous
     flycheck
     fsharp-mode
     gist
@@ -84,6 +87,8 @@
 ;;------------------------------------------------------------------------------
 ;; Auto Complete
 ;;------------------------------------------------------------------------------
+(require 'ido)
+(ido-mode t)
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
