@@ -85,10 +85,25 @@
 (load-theme 'zenburn t)
 
 ;;------------------------------------------------------------------------------
-;; Auto Complete
+;; IDO
 ;;------------------------------------------------------------------------------
+
 (require 'ido)
 (ido-mode t)
+
+(global-set-key
+     "\M-x"
+     (lambda ()
+       (interactive)
+       (call-interactively
+        (intern
+         (ido-completing-read
+          "M-x "
+          (all-completions "" obarray 'commandp))))))
+
+;;------------------------------------------------------------------------------
+;; Auto Complete
+;;------------------------------------------------------------------------------
 
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
