@@ -71,6 +71,16 @@
 (add-to-list 'load-path "~/.emacs.d/")
 (setq debug-on-error t)
 
+;set theme
+(load-theme 'zenburn t)
+
+;enable line numbers
+(global-linum-mode t)
+
+;;------------------------------------------------------------------------------
+;; Keyboard
+;;------------------------------------------------------------------------------
+
 ;; scroll from the keyboard (what is everyone else using!?)
 (global-set-key "\M-N" 'up-semi-slow)
 (global-set-key "\M-P" 'down-semi-slow)
@@ -80,9 +90,6 @@
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
-
-;set theme
-(load-theme 'zenburn t)
 
 ;;------------------------------------------------------------------------------
 ;; IDO
