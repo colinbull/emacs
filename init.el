@@ -52,7 +52,7 @@
     flycheck
     fsharp-mode
     gist
-    haskell-mode
+   ;; haskell-mode
     idris-mode
     json
     markdown-mode
@@ -68,7 +68,7 @@
 ;; General settings
 ;;------------------------------------------------------------------------------
 
-(add-to-list 'load-path "~/.emacs.d/")
+;;(add-to-list 'load-path "~/.emacs.d/")
 (setq debug-on-error t)
 
 ;set theme
@@ -219,7 +219,7 @@
 ;; Haskell
 ;;------------------------------------------------------------------------------
 
-(require 'haskell-mode-autoloads)
+;;(require 'haskell-mode-autoloads)
 
 ;;------------------------------------------------------------------------------
 
