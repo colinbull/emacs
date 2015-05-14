@@ -11,6 +11,7 @@
   (menu-bar-mode 0))
 
 (setq inhibit-splash-screen t)
+(setq-default truncate-lines 1)
 ;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
