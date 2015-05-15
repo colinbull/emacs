@@ -73,7 +73,6 @@
 ;; General settings
 ;;------------------------------------------------------------------------------
 
-;;(add-to-list 'load-path "~/.emacs.d/")
 (setq debug-on-error t)
 
 ;set theme
@@ -81,6 +80,12 @@
 
 ;enable line numbers
 (global-linum-mode t)
+
+;squash cd auto-save
+(setq backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t)))
 
 ;magic auto compile
 (require 'auto-compile)
