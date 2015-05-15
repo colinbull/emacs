@@ -33,7 +33,8 @@
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ;("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+                         ("melpa" . "http://melpa.milkbox.net/packages/")
+			 ("melpa-stable" . "http://stable.melpa.org/packages/")))
 
 (package-initialize)
 
@@ -58,7 +59,11 @@
     json
     markdown-mode
     rainbow-delimiters
-    yasnippet)
+    yasnippet
+    pretty-mode
+    projectile
+    flx-ido
+    )
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
@@ -69,7 +74,6 @@
 ;; General settings
 ;;------------------------------------------------------------------------------
 
-;;(add-to-list 'load-path "~/.emacs.d/")
 (setq debug-on-error t)
 
 ;set theme
@@ -77,6 +81,17 @@
 
 ;enable line numbers
 (global-linum-mode t)
+
+;squash cd auto-save
+(setq backup-directory-alist
+          `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+          `((".*" ,temporary-file-directory t)))
+
+;magic auto compile
+(require 'auto-compile)
+(auto-compile-on-load-mode 1)
+(auto-compile-on-save-mode 1)
 
 ;;------------------------------------------------------------------------------
 ;; Keyboard
@@ -109,6 +124,21 @@
           "M-x "
           (all-completions "" obarray 'commandp))))))
 
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-enable-flex-matching t)
+(setq ido-use-faces nil)
+
+;;------------------------------------------------------------------------------
+;; Projectile
+;;------------------------------------------------------------------------------
+
+(require 'projectile)
+(projectile-global-mode)
+
 ;;------------------------------------------------------------------------------
 ;; Auto Complete
 ;;------------------------------------------------------------------------------
@@ -140,12 +170,10 @@
 (setq auto-save-list-file-prefix "~/.save/.saves-")
 
 
-;;    Choose interactively from the kill ring.
+;; Choose interactively from the kill ring.
 (require 'browse-kill-ring)
 (global-set-key (kbd "C-c C-k") 'browse-kill-ring)
-;;(set-face-attribute 'default nil :height 140)
 
-;;(set-cursor-color "#00ff00")
 
 ;;------------------------------------------------------------------------------
 ;; Gist
@@ -187,6 +215,10 @@
             (setq indent-line-function 'insert-tab)
             (define-key fsharp-mode-map (kbd "M-RET") 'fsharp-eval-region)
             (define-key fsharp-mode-map (kbd "C-SPC") 'fsharp-ac/complete-at-point)))
+
+(require 'pretty-mode)
+(add-hook 'fsharp-mode-hook 'turn-on-pretty-mode)
+
 ;;------------------------------------------------------------------------------
 ;; XML
 ;;------------------------------------------------------------------------------
