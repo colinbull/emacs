@@ -1,0 +1,1 @@
+("c:/Appdev/petroineos.var/" "c:/Appdev/Symphony.Reporting/" "~/.emacs.d/" "c:/Appdev/Symphony.Lacima/" "c:/Appdev/petroineos.mdm/" "c:/Appdev/SqlProvider/")
