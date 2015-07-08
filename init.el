@@ -19,6 +19,14 @@
 (defvar system-type-as-string (prin1-to-string system-type))
 (defvar on_windows_nt (string-match "windows-nt" system-type-as-string))
 (defvar on_darwin     (string-match "darwin" system-type-as-string))
+(defvar site-lisp-dir (expand-file-name "site-lisp" user-emacs-directory)
+  "This directory is for your personal configuration.")
+
+;;------------------------------------------------------------------------------
+;; Load Path
+;;------------------------------------------------------------------------------
+
+(add-to-list 'load-path site-lisp-dir)
 
 ;;------------------------------------------------------------------------------
 ;; Package management
@@ -51,8 +59,10 @@
     browse-kill-ring
     ido-at-point
     ido-ubiquitous
+    ido-vertical-mode
     flycheck
     fsharp-mode
+    omnisharp
     gist
    ;; haskell-mode
     idris-mode
@@ -69,6 +79,9 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
+
+(eval-after-load "sql"
+  '(load-library "tsql-indent"))
 
 ;;------------------------------------------------------------------------------
 ;; General settings
@@ -113,6 +126,9 @@
 
 (require 'ido)
 (ido-mode t)
+
+(require 'ido-vertical-mode)
+(ido-vertical-mode)
 
 (global-set-key
      "\M-x"
@@ -191,6 +207,15 @@
 (add-to-list 'exec-path "~/Appdev/idris/.cabal-sandbox/bin")
 
 
+;;------------------------------------------------------------------------------
+;;C#
+;;-----------------------------------------------------------------------------
+
+(require 'omnisharp)
+
+(setq omnisharp--curl-executable-path "C://Users//colinbull//OneDrive//Tools//curl//winssl//curl.exe")
+(setq omnisharp-server-executable-path "C://Appdev//OmniSharpServer//OmniSharp//bin//Debug//OmniSharp.exe")
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
 
 ;;------------------------------------------------------------------------------
 ;; F#
