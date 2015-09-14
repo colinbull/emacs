@@ -1,1 +1,1 @@
-("c:/Appdev/petroineos.var/" "c:/Appdev/Symphony.Reporting/" "~/.emacs.d/" "c:/Appdev/Symphony.Lacima/" "c:/Appdev/petroineos.mdm/" "c:/Appdev/SqlProvider/")
+("~/Appdev/SqlProvider/" "~/Appdev/petro.common/" "~/Appdev/fsharp/" "~/.emacs.d/" "~/Appdev/FSharp.Compiler.Service.HandsOn/" "~/Appdev/fake/" "/usr/local/" "~/Appdev/petroineos.var/" "c:/Appdev/petroineos.var/" "c:/Appdev/Symphony.Reporting/" "c:/Appdev/Symphony.Lacima/" "c:/Appdev/petroineos.mdm/" "c:/Appdev/SqlProvider/")
