@@ -12,7 +12,7 @@
 
 (setq inhibit-splash-screen t)
 (setq-default truncate-lines 1)
-(toggle-frame-fullscreen)
+;;(toggle-frame-fullscreen)
 ;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
@@ -47,6 +47,7 @@
 
 (package-initialize)
 
+
 (when (not package-archive-contents)
   (package-refresh-contents))
 
@@ -63,6 +64,7 @@
     ido-vertical-mode
     flycheck
     fsharp-mode
+    elm-mode
     omnisharp
     gist
     haskell-mode
@@ -71,10 +73,11 @@
     markdown-mode
     rainbow-delimiters
     yasnippet
- ;;   pretty-mode
+ ;;   pretty-mode    
     projectile
     flx-ido
     ace-jump-mode
+    exec-path-from-shell
     )
   "A list of packages to ensure are installed at launch.")
 
@@ -85,6 +88,8 @@
 (eval-after-load "sql"
   '(load-library "tsql-indent"))
 
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;;------------------------------------------------------------------------------
 ;; General settings
@@ -102,6 +107,8 @@
           `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
           `((".*" ,temporary-file-directory t)))
+
+(add-to-list 'exec-path "/usr/local/bin/")
 
 ;magic auto compile
 (require 'auto-compile)
@@ -178,7 +185,7 @@
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
 (setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
 (global-auto-complete-mode t)
-(setq ac-auto-start 2)
+(setq ac-auto-start nil)
 (setq ac-ignore-case nil)
 
 (require 'yasnippet)
@@ -221,6 +228,12 @@
 ;;Point at idris dev sandbox
 (add-to-list 'exec-path "~/.cabal/bin")
 
+;;;-----------------------------------------------------------------------------
+;;; ELm
+;;;-----------------------------------------------------------------------------
+
+(require 'elm-mode)
+(add-hook 'elm-mode-hook #'elm-oracle-setup-ac)
 
 ;;------------------------------------------------------------------------------
 ;;C#
@@ -240,8 +253,8 @@
 
 ; Compiler and REPL paths
 (cond (on_darwin
-       (setq inferior-fsharp-program "/usr/bin/fsharpi --readline-")
-       (setq fsharp-compiler "/usr/bin/fsharpc")
+       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+       (setq fsharp-compiler "/usr/local/bin/fsharpc")
        )
       (on_windows_nt
        (setq inferior-fsharp-program "\"C:\\Program Files (x86)\\Microsoft SDKs\\F#\\3.1\\Framework\\v4.0\\Fsi.exe\"")
@@ -271,7 +284,6 @@
 ;; aspell
 ;;------------------------------------------------------------------------------
 
-(add-to-list 'exec-path "/usr/local/bin/")
 (setq ispell-program-name "aspell")
 (require 'ispell)
 
