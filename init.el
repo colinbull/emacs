@@ -4,15 +4,13 @@
 ;;------------------------------------------------------------------------------
 ;; UI Disabling
 ;;------------------------------------------------------------------------------
+(setq scroll-bar-mode 0)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
 
-(when window-system
-  (scroll-bar-mode 0)
-  (tool-bar-mode 0)
-  (menu-bar-mode 0))
 
 (setq inhibit-splash-screen t)
-(setq-default truncate-lines 1)
-;;(toggle-frame-fullscreen)
+
 ;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
@@ -100,7 +98,8 @@
 (load-theme 'zenburn t)
 
 ;enable line numbers
-(global-linum-mode t)
+;(global-linum-mode f)
+(line-number-mode 1)
 
 ;squash cd auto-save
 (setq backup-directory-alist
@@ -241,8 +240,14 @@
 
 (require 'omnisharp)
 
-(setq omnisharp--curl-executable-path "C://Users//colinbull//OneDrive//Tools//curl//winssl//curl.exe")
-(setq omnisharp-server-executable-path "C://Appdev//OmniSharpServer//OmniSharp//bin//Debug//OmniSharp.exe")
+(cond (on_darwin
+       (setq omnisharp--curl-executable-path "/usr/bin/curl")
+       )
+      (on_windows_nt
+         (setq omnisharp--curl-executable-path "C://Users//colinbull//OneDrive//Tools//curl//winssl//curl.exe")
+	 (setq omnisharp-server-executable-path "C://Appdev//OmniSharpServer//OmniSharp//bin//Debug//OmniSharp.exe")
+	 ))
+
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
 
 ;;------------------------------------------------------------------------------
@@ -253,7 +258,7 @@
 
 ; Compiler and REPL paths
 (cond (on_darwin
-       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --gdb --readline-")
        (setq fsharp-compiler "/usr/local/bin/fsharpc")
        )
       (on_windows_nt
