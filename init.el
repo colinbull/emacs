@@ -62,6 +62,7 @@
     flycheck
     fsharp-mode
     elm-mode
+    popup
     omnisharp
     gist
     haskell-mode
@@ -241,17 +242,22 @@
 ;;-----------------------------------------------------------------------------
 
 (require 'omnisharp)
+(require 'popup)
 
 (cond (on_darwin
        (setq omnisharp--curl-executable-path "/usr/bin/curl")
+       (setq omnisharp-server-executable-path "~/.emacs.d/omnisharp/OmniSharp/bin/Debug/OmniSharp.exe")
        )
       (on_windows_nt
          (setq omnisharp--curl-executable-path "C://Users//colinbull//OneDrive//Tools//curl//winssl//curl.exe")
 	 (setq omnisharp-server-executable-path "C://Appdev//OmniSharpServer//OmniSharp//bin//Debug//OmniSharp.exe")
 	 ))
 
-(add-hook 'csharp-mode-hook 'omnisharp-mode)
+(setq omnisharp--auto-complete-display-backend 'popup)
 
+(add-hook 'csharp-mode-hook 'omnisharp-mode)
+(add-hook 'csharp-mode-hook (lambda () (define-key omnisharp-mode-map (kbd "C-c C-t") 'omnisharp-auto-complete)))
+(add-to-list 'ac-modes 'csharp-mode)
 ;;------------------------------------------------------------------------------
 ;; F#
 ;;------------------------------------------------------------------------------
@@ -274,7 +280,7 @@
             (setq-default tab-width 4)
             (setq indent-line-function 'insert-tab)
             (define-key fsharp-mode-map (kbd "M-RET") 'fsharp-eval-region)
-            (define-key fsharp-mode-map (kbd "C-SPC") 'fsharp-ac/complete-at-point)))
+            (define-key fsharp-mode-map (kbd "C-c C-t") 'fsharp-ac/complete-at-point)))
 
 (require 'pretty-mode)
 (add-hook 'fsharp-mode-hook 'turn-on-pretty-mode)
