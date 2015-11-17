@@ -10,7 +10,6 @@
 
 
 (setq inhibit-splash-screen t)
-
 ;;------------------------------------------------------------------------------
 ;; System type discriminators
 ;;------------------------------------------------------------------------------
@@ -117,6 +116,9 @@
 ;;------------------------------------------------------------------------------
 ;; Keyboard
 ;;------------------------------------------------------------------------------
+
+(setq mac-option-key-is-meta t)
+(setq mac-right-option-modifer nil)
 
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
 ;; scroll from the keyboard (what is everyone else using!?)
@@ -258,7 +260,7 @@
 
 ; Compiler and REPL paths
 (cond (on_darwin
-       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --gdb --readline-")
+       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
        (setq fsharp-compiler "/usr/local/bin/fsharpc")
        )
       (on_windows_nt
