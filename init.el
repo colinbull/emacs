@@ -1,6 +1,8 @@
 ;;-*-Emacs-Lisp-*-
 ;; .emacs
 
+(setq debug-on-error t)
+
 ;;------------------------------------------------------------------------------
 ;; UI Disabling
 ;;------------------------------------------------------------------------------
@@ -53,13 +55,15 @@
 (defvar my-packages 
   '(
     zenburn-theme
+    seti-theme
     auto-compile
-    auto-complete
+    company
     browse-kill-ring
     ido-at-point
     ido-ubiquitous
     ido-vertical-mode
     flycheck
+    flycheck-rust
     fsharp-mode
     elm-mode
     popup
@@ -76,15 +80,17 @@
     flx-ido
     ace-jump-mode
     exec-path-from-shell
+    which-key
+    magit
+    rust-mode
+    company-racer
+    racer
     )
   "A list of packages to ensure are installed at launch.")
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-
-(eval-after-load "sql"
-  '(load-library "tsql-indent"))
 
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
@@ -95,7 +101,7 @@
 (setq debug-on-error t)
 
 ;set theme
-(load-theme 'zenburn t)
+(load-theme 'seti t)
 
 ;enable line numbers
 ;(global-linum-mode f)
@@ -114,17 +120,21 @@
 (auto-compile-on-load-mode 1)
 (auto-compile-on-save-mode 1)
 
+(require 'which-key)
+(which-key-mode)
+(which-key-setup-minibuffer)
+;;------------------------------------------------------------------------------
+;; Layout
+;;------------------------------------------------------------------------------
+
+;;Mybe use desktop.el
+
 ;;------------------------------------------------------------------------------
 ;; Keyboard
 ;;------------------------------------------------------------------------------
 
-(setq mac-option-key-is-meta t)
-(setq mac-right-option-modifer nil)
-
 (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
-;; scroll from the keyboard (what is everyone else using!?)
-(global-set-key "\M-N" 'up-semi-slow)
-(global-set-key "\M-P" 'down-semi-slow)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;;set cycle buffers
 (global-set-key (kbd "C-x <up>") 'windmove-up)
@@ -183,17 +193,9 @@
 ;; Auto Complete
 ;;------------------------------------------------------------------------------
 
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
-(setq-default ac-sources (add-to-list 'ac-sources 'ac-source-dictionary))
-(global-auto-complete-mode t)
-(setq ac-auto-start nil)
-(setq ac-ignore-case nil)
-
-(require 'yasnippet)
-(yas-global-mode 1)
-;; Add snippets to the auto-complete dropdown
-(add-to-list 'ac-sources 'ac-source-yasnippet)
+(global-company-mode)
+(setq company-idle-delay 0.2)
+(setq company-minimum-prefix-length 1)
 
 ;;________________________________________________________________
 ;;    Insert hard newlines while typing in text mode
@@ -253,11 +255,14 @@
 	 (setq omnisharp-server-executable-path "C://Appdev//OmniSharpServer//OmniSharp//bin//Debug//OmniSharp.exe")
 	 ))
 
-(setq omnisharp--auto-complete-display-backend 'popup)
+;;(setq omnisharp--company-display-backend 'popup)
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-omnisharp))
 
 (add-hook 'csharp-mode-hook 'omnisharp-mode)
-(add-hook 'csharp-mode-hook (lambda () (define-key omnisharp-mode-map (kbd "C-c C-t") 'omnisharp-auto-complete)))
-(add-to-list 'ac-modes 'csharp-mode)
+(add-hook 'csharp-mode-hook (lambda () (define-key omnisharp-mode-map (kbd "C-c C-SPC") 'omnisharp-auto-complete)))
+
 ;;------------------------------------------------------------------------------
 ;; F#
 ;;------------------------------------------------------------------------------
@@ -266,7 +271,7 @@
 
 ; Compiler and REPL paths
 (cond (on_darwin
-       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --readline-")
+       (setq inferior-fsharp-program "/usr/local/bin/fsharpi --debug --readline-")
        (setq fsharp-compiler "/usr/local/bin/fsharpc")
        )
       (on_windows_nt
@@ -280,10 +285,46 @@
             (setq-default tab-width 4)
             (setq indent-line-function 'insert-tab)
             (define-key fsharp-mode-map (kbd "M-RET") 'fsharp-eval-region)
-            (define-key fsharp-mode-map (kbd "C-c C-t") 'fsharp-ac/complete-at-point)))
+            (define-key fsharp-mode-map (kbd "C-c C-SPC") 'fsharp-ac/complete-at-point)))
 
 (require 'pretty-mode)
 (add-hook 'fsharp-mode-hook 'turn-on-pretty-mode)
+
+;;-----------------------------------------------------------------------------
+;; Rust
+;;-----------------------------------------------------------------------------
+
+(require 'racer)
+
+
+(setq racer-cmd "~/.cargo/bin/racer")
+(setq racer-rust-src-path "~/.rust/src")
+
+;; Load rust-mode when you open `.rs` files
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+;; Setting up configurations when you load rust-mode
+(add-hook 'rust-mode-hook
+
+	  '(lambda ()
+
+	     ;; Enable racer
+	     (racer-activate)
+	     
+	     ;; Hook in racer with eldoc to provide documentation
+	     (racer-turn-on-eldoc)
+
+	     ;; Use flycheck-rust in rust-mode
+	     ;;(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+	     
+	     ;; Use company-racer in rust mode
+	     (set (make-local-variable 'company-backends) '(company-racer))
+	     ;; Key binding to jump to method definition
+	     (local-set-key (kbd "M-.") #'racer-find-definition)
+
+	     ;; Key binding to auto complete and indent
+	     (local-set-key (kbd "C-c C-t") #'racer-complete-or-indent)
+	     ))
 
 ;;------------------------------------------------------------------------------
 ;; XML
@@ -292,6 +333,21 @@
 (setq auto-mode-alist (cons '("\\.ipe\\'" . xml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.qrc\\'" . xml-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.svg\\'" . xml-mode) auto-mode-alist))
+
+(defun bf-pretty-print-xml-region (begin end)
+    "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this. The function inserts linebreaks to separate tags that have
+nothing but whitespace between them. It then indents the markup
+by using nxml's indentation rules."
+    (interactive "r")
+    (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+        (backward-char) (insert "\n") (setq end (1+ end)))
+      (indent-region begin end))
+      (message "Ah, much better!"))
 
 ;;------------------------------------------------------------------------------
 ;; aspell
@@ -324,18 +380,42 @@
 
 ;; Customization
 (custom-set-variables
- ;; Use cabal-dev for the GHCi session. Ensures our dependencies are in scope.
- ;;'(haskell-process-type 'cabal-dev)
-
- ;; Use notify.el (if you have it installed) at the end of running
- ;; Cabal commands or generally things worth notifying.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
+ '(custom-safe-themes
+   (quote
+    ("9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default)))
+ '(fci-rule-color "#383838")
  '(haskell-notify-p t)
-
- ;; To enable tags generation on save.
+ '(haskell-stylish-on-save t)
  '(haskell-tags-on-save t)
-
- ;; To enable stylish on save.
- '(haskell-stylish-on-save t))
+ '(magit-commit-arguments nil)
+ '(vc-annotate-background "#2B2B2B")
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#BC8383")
+     (40 . "#CC9393")
+     (60 . "#DFAF8F")
+     (80 . "#D0BF8F")
+     (100 . "#E0CF9F")
+     (120 . "#F0DFAF")
+     (140 . "#5F7F5F")
+     (160 . "#7F9F7F")
+     (180 . "#8FB28F")
+     (200 . "#9FC59F")
+     (220 . "#AFD8AF")
+     (240 . "#BFEBBF")
+     (260 . "#93E0E3")
+     (280 . "#6CA0A3")
+     (300 . "#7CB8BB")
+     (320 . "#8CD0D3")
+     (340 . "#94BFF3")
+     (360 . "#DC8CC3"))))
+ '(vc-annotate-very-old-color "#DC8CC3"))
 
 (add-hook 'haskell-mode-hook 'haskell-hook)
 (add-hook 'haskell-cabal-mode-hook 'haskell-cabal-hook)
@@ -405,14 +485,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(highlight ((t nil))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCCC"])
- '(custom-safe-themes (quote ("9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default)))
- '(fci-rule-color "#383838")
- '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map (quote ((20 . "#BC8383") (40 . "#CC9393") (60 . "#DFAF8F") (80 . "#D0BF8F") (100 . "#E0CF9F") (120 . "#F0DFAF") (140 . "#5F7F5F") (160 . "#7F9F7F") (180 . "#8FB28F") (200 . "#9FC59F") (220 . "#AFD8AF") (240 . "#BFEBBF") (260 . "#93E0E3") (280 . "#6CA0A3") (300 . "#7CB8BB") (320 . "#8CD0D3") (340 . "#94BFF3") (360 . "#DC8CC3"))))
- '(vc-annotate-very-old-color "#DC8CC3"))
+
